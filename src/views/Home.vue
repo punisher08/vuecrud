@@ -8,88 +8,46 @@
   </div> 
 </template>
 <script>
-// import Header from "../components/layouts/Header";
+
 import Todos from "../components/Todos";
 import AddTodo from "../components/AddTodo";
-// import axios from "axios"
-// import HelloWorld from "./components/HelloWorld";
+import axios from "axios"
+
 export default {
   name:'Home',
   components:{
-    // HelloWorld,
-    // Header,
     Todos,
     AddTodo
   },
   data(){
     return{
-      todos: [
-        {
-          id:1,
-          title:'One',
-          completed:false
-        },
-        {
-          id:2,
-          title:'Two',
-          completed:false
-        },
-        {
-          id:3,
-          title:'Three',
-          completed:false
-        },
-      ]
+      todos: []
     }
   },
   methods:{
     
     deleteTodo(id){
-      // this.todos = this.todos.filter(todo => todo.id !==id)
-      // axios.delete(`https://jsonplaceholder.typicode.com/todos/${id}`)
-      //   .then(response => {
-      //     console.log(response)
-        // })
-          this.todos = this.todos.filter(todo => todo.id !==id)
-        // .catch(error => console.log(error));
-      
-      // this.todos = this.todos.filter(todo => todo.id !== id);
-
-      // axios.get(`http://myendpoint.com/v1/api/${todo.id}`)
-      //       .then(response => {
-      //           this.todo = 'something'
-      //           alert('Todo Added')
-      //           console.log(response)
-      //         })
-      //         .catch(err => {
-      //           alert('something went wrong')
-      //           console.log(err)
-      //         })
-      // try {
-      //   var enpointResult = await axios.get(`http://myendpoint.com/v1/api/${todo.id}`);
-      // } catch (error) {
-      //   console.log(error)
-      // }
-      
-      // console.log('delayed');
-
-      
+  
+      axios.delete(`http://127.0.0.1:8000/api/todo/delete/${id}`)
+        .then(response => {
+          console.log(response)
+        })
     },
     addTodo(myNewTodo){
-    //  const{title,completed} = myNewTodo
-    //  axios.post('https://jsonplaceholder.typicode.com/todos',{
-    //    title,
-    //    completed
-    //  }).then(response => this.todos = [...this.todos, response.data])
-    //  .catch(error => console.log(error))
-      this.todos = [...this.todos, myNewTodo];
-     
+     const{title,description} = myNewTodo
+     axios.post('http://127.0.0.1:8000/api/todo/create',{
+       title,
+       description
+     }).then(response => this.todos = [...this.todos, response.data])
+     .catch(error => console.log(error))
     }
   },
-  // created(){
-  //   axios.get('https://jsonplaceholder.typicode.com/todos?_limit=1').then(res => this.todos = res.data)
-  //   .catch(error => console.log(error))
-  // }
+  created(){
+    axios.get('http://127.0.0.1:8000/api/todos').then(res => {
+      this.todos = res.data.data
+      })
+    .catch(error => console.log(error))
+  }
  
 
 }

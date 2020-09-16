@@ -1,5 +1,8 @@
 <template>
-  <p>{{todo.description}}</p>
+  <div class="float-right">
+    <p>{{todo.description}}</p>
+    <button @click="$emit('close')">Close</button>
+  </div>
 </template>
 <script>
 export default {

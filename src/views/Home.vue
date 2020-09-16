@@ -1,17 +1,31 @@
 <template>
   <div id="app">
     <!-- <Header /> -->
-
-    <AddTodo v-on:add-todo="addTodo" />
-    <Todos :todos="todos" v-on:del-todo="deleteTodo" v-on:edit-todo="editTodo"></Todos>
-    <Modal v-if="showModal" @close="showModal = false" v-on:save="saveData">
+    <div class="row">
+      <AddTodo v-on:add-todo="addTodo" />
+    </div>
+    <div class="row">
+      <Todos :todos="todos" v-on:del-todo="deleteTodo" v-on:edit-todo="editTodo"></Todos>
+    </div>
+    <Modal
+      v-if="showModal"
+      @close="showModal = false"
+      v-on:save="saveData"
+      v-on:edit-todo="saveData"
+    >
       <div slot="body">
         <form>
-          <input type="text" name="title" v-model="selectedTodo.title" />
-          <input type="text" name="description" v-model="selectedTodo.description" />
+          <input type="text" name="title" v-model="selectedTodo.title" class="form-control" />
+          <br />
+          <textarea
+            type="text"
+            name="description"
+            v-model="selectedTodo.description"
+            class="form-control"
+          />
         </form>
       </div>
-      <h3 slot="header">custom header</h3>
+      <h3 slot="header">Update Data</h3>
     </Modal>
   </div>
 </template>
@@ -34,6 +48,7 @@ export default {
       showModal: false,
 
       selectedTodo: {
+        id: "",
         title: "",
         description: "",
       },
@@ -68,6 +83,7 @@ export default {
 
       this.todos.map((todo) => {
         if (todo.id == todoId) {
+          this.selectedTodo.id = todo.id;
           this.selectedTodo.title = todo.title;
           this.selectedTodo.description = todo.description;
         }
@@ -77,8 +93,19 @@ export default {
     //   console.log(to_id);
     // },
     saveData() {
-      //
-      console.log(this.selectedTodo.title, this.selectedTodo.description);
+      // console.log(this.selectedTodo);
+      // console.log(this.selectedTodo.title, this.selectedTodo.description);
+      axios
+        .post(`http://127.0.0.1:8000/api/todo/update/${this.selectedTodo.id}`, {
+          title: this.selectedTodo.title,
+          description: this.selectedTodo.description,
+        })
+        .then((res) => {
+          (this.todos = this.todo), res.data.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   },
   created() {

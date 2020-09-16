@@ -54,7 +54,7 @@
     </svg>
     <div class="ml-4 text-left col-md-10">
       <p>{{todo.title}}</p>
-      <Show v-if="show" :todo="todo"></Show>
+      <Show v-if="show" :todo="todo" @close="show= false"></Show>
     </div>
   </div>
 </template>
@@ -88,10 +88,6 @@ export default {
     showTodo() {
       this.show = true;
     },
-    // editTodo(todoId) {
-    //   //   console.log("Edit todo clicked");
-
-    // },
   },
 };
 </script>

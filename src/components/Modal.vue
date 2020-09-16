@@ -4,7 +4,7 @@
       <div class="modal-wrapper">
         <div class="modal-container">
           <div class="modal-header">
-            <slot name="header">default header</slot>
+            <slot name="header">Update Data</slot>
           </div>
 
           <div class="modal-body">
@@ -13,7 +13,6 @@
 
           <div class="modal-footer">
             <slot name="footer">
-              default footer
               <button class="modal-default-button" @click="$emit('close')">Close</button>
               <button class="modal-default-button" @click="$emit('save')">Save</button>
             </slot>

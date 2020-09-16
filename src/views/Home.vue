@@ -101,7 +101,19 @@ export default {
           description: this.selectedTodo.description,
         })
         .then((res) => {
-          (this.todos = this.todo), res.data.data;
+          console.log(this.todos);
+
+          this.todos.map((todo) => {
+            if (todo.id == this.selectedTodo.id) {
+              todo.title = res.data.data.title;
+              todo.description = res.data.data.description;
+            }
+            return todo;
+          });
+          this.showModal = false;
+          this.selectedTodo.id = "";
+          this.selectedTodo.title = "";
+          this.selectedTodo.description = "";
         })
         .catch((err) => {
           console.log(err);
